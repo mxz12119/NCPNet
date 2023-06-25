@@ -1,0 +1,32 @@
+Experiment: 'HemiBrain' #Dataset name
+Train: #Train setting
+  val: 0.80 #Valid set
+  test: 0.1 #Test set
+  train: 0.1 #Train set
+  lr: 0.005 #Learning rate
+  epoch: 400 
+  weight_decay: 0.000005 # Optimizer setting
+  seed: 68
+  device: 'cuda:1' #device
+  optimizer: 'adam'
+  save: './saved' #model output director
+  loss: 'bce'
+  eval_step: 2 # The number of training epochs between evaluations.
+  negtive_num: 1 #Negtives sampling number
+  task_save: 'mlp_demo_model3' # save director name
+  use_tensor_board: True # Tensorboard is used for recording training process.
+  batch_size : 10000
+  save_dataset: True #Whether save split dataset
+Model: 
+  LinkPred: # Link prediction task
+    node_encoder: 'GCN' #NSIE 
+    pair_encoder: 'NeighEnco2' #NBE
+    use_type_info: False 
+    in_channels: 5555
+    hidden_channels: 128
+    out_channels: 64
+    dim: 100
+    dropout: 0.5
+    score_func: 'mlptri' # Link predictor
+    num_layer: 2 #GCN layer number
+    hop: 2
