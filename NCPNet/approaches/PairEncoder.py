@@ -49,11 +49,11 @@ class NeighEnco2(torch.nn.Module):
         self.conv1=torch.nn.Conv1d(config['out_channels'],int(config['out_channels']*0.5),kernel_size=1,bias=False)
 
         self.act_f1=nn.LeakyReLU(0.05)
-        self.dp1=torch.nn.Dropout(inplace=True)
+        self.dp1=torch.nn.Dropout(config['dropout'])
         
         self.conv2=torch.nn.Conv1d(int(config['out_channels']*0.5),config['out_channels']-int(config['out_channels']*0.5),kernel_size=1,bias=False)
         self.act_f2=nn.LeakyReLU(0.05)
-        self.dp2=torch.nn.Dropout(inplace=True)
+        self.dp2=torch.nn.Dropout(config['dropout'])
     def forward(self,z,neighbor=None):
         if len(neighbor.squeeze())==0:
             return torch.zeros(size=(len(neighbor),self.model_config['out_channels']))

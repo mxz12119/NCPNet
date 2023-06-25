@@ -18,8 +18,8 @@ class dot_predictor(torch.nn.Module):
 class mlp_predictor(torch.nn.Module):
     def __init__(self,config) -> None:
         super().__init__()
-        self.mlp=torch.nn.Sequential(Linear(config['out_channels']*2,256,bias=True),Dropout(inplace=True),ReLU(inplace=True),\
-            Linear(256,128,bias=True),Dropout(inplace=True),ReLU(inplace=True),Linear(128,1,bias=False))
+        self.mlp=torch.nn.Sequential(Linear(config['out_channels']*2,256,bias=True),Dropout(config['dropout']),ReLU(config['dropout']),\
+            Linear(256,128,bias=True),Dropout(config['dropout']),ReLU(config['dropout']),Linear(128,1,bias=False))
    
     def forward(self,e1,e2):
         x=torch.cat((e1,e2),1)
@@ -30,8 +30,8 @@ class mlp_predictor(torch.nn.Module):
 class mlptri_predictor(torch.nn.Module):
     def __init__(self,config) -> None:
         super().__init__()
-        self.mlp=torch.nn.Sequential(Linear(config['out_channels']*3,256,bias=True),Dropout(inplace=True),ReLU(inplace=True),\
-            Linear(256,128,bias=True),Dropout(inplace=True),ReLU(inplace=True),Linear(128,1,bias=False))
+        self.mlp=torch.nn.Sequential(Linear(config['out_channels']*3,256,bias=True),Dropout(config['dropout']),ReLU(config['dropout']),\
+            Linear(256,128,bias=True),Dropout(config['dropout']),ReLU(config['dropout']),Linear(128,1,bias=False))
     def forward(self,e1,e2,n):
         x=torch.cat((e1,e2,n),1)
         x=self.mlp(x)
@@ -80,7 +80,7 @@ class joint_predictor(torch.nn.Module):
     def __init__(self,config) -> None:
         super().__init__()
         self.model_config = config
-        self.mlp=torch.nn.Sequential(Linear(config['out_channels']*2,256,bias=True),Dropout(inplace=True),ReLU(inplace=True),\
+        self.mlp=torch.nn.Sequential(Linear(config['out_channels']*2,256,bias=True),Dropout(config['dropout']),ReLU(config['dropout']),\
             Linear(256,config['out_channels'],bias=True))
         self.lin1=torch.nn.Linear(config['out_channels'],1,bias=True)
 

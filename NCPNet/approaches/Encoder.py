@@ -10,7 +10,7 @@ class node_attr_encoder(torch.nn.Module):
     def __init__(self, config):
         super(node_attr_encoder, self).__init__()
         self.model_config = config
-        self.drop1 = torch.nn.Dropout(inplace=True)
+        self.drop1 = torch.nn.Dropout(config['dropout'])
         if (self.model_config['num_node']) is None or (self.model_config['use_type_info']):
             self.x_embddings = torch.nn.Linear(self.model_config['type_dim'], self.model_config['dim'], bias=False)
         else:
@@ -34,7 +34,7 @@ class convLayer(torch.nn.Module):
         else:
             pass
         if dropout is not None:
-            self.drop=torch.nn.Dropout(inplace=True)
+            self.drop=torch.nn.Dropout(dropout)
     def forward(self, x=None, edge_index=None,
                 edge_weight = None):
         x=self.conv(x,edge_index,edge_weight=edge_weight)
@@ -54,7 +54,7 @@ class GCN(torch.nn.Module):
         
         
         self.relu1=torch.nn.ReLU()
-        self.drop1=torch.nn.Dropout(inplace=True)
+        self.drop1=torch.nn.Dropout(config['dropout'])
         self.conv2 = GCNConv(self.model_config['hidden_channels'], self.model_config['out_channels'])
 
     def forward(self,x=None, edge_index=None):
@@ -76,7 +76,7 @@ class MLP(torch.nn.Module):
         #self.convs = torch.nn.ModuleList()
         self.conv1=torch.nn.Linear(self.model_config['dim'], self.model_config['hidden_channels'])
         self.relu1=torch.nn.ReLU()
-        self.drop1=torch.nn.Dropout(inplace=True)
+        self.drop1=torch.nn.Dropout(config['dropout'])
         self.conv2=torch.nn.Linear(self.model_config['hidden_channels'], self.model_config['out_channels'])
     def forward(self,x=None, edge_index=None):
         x=self.node_attr_layer(x)
@@ -98,7 +98,7 @@ class GCN2(torch.nn.Module):
         for i in range(self.num_layers - 1):
             self.convs.append(Sequential(
                         ReLU(),
-                        torch.nn.Dropout(inplace=True),
+                        torch.nn.Dropout(config['dropout']),
                         GCNConv(self.out_channel,self.out_channel),
                     ))
     def forward(self,x=None, edge_index=None):
@@ -135,7 +135,3 @@ class GIN(torch.nn.Module):
         for conv in self.convs:
             x=conv(x,edge_index)
         return x
-
-
-if __name__=='__main__':
-    pass

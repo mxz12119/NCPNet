@@ -1,4 +1,4 @@
-from . import approaches,brain_data,task,trainer,utils
+from . import approaches,brain_data,task,trainer,utils,loader
 from .predict import Inferrer
 
-__all__ = ['Inferrer','approaches', 'brain_data','task','trainer','utils']
+__all__ = ['Inferrer','approaches','loader','brain_data','task','trainer','utils']

@@ -1,8 +1,5 @@
 
 import torch
-#from torch_geometric.nn import GCNConv
-#from torch.nn import Sequential, Linear, BatchNorm1d, ReLU,LayerNorm
-
 from .Encoder import GCN,GCN2,MLP,node_attr_encoder
 from .Decoder import LinkPred
 from .PairEncoder import NeighEnco,NeighEnco2
@@ -11,7 +8,7 @@ import pickle
 import yaml
 import os
 from NCPNet.utils import edge_index2Graph
-from NCPNet.brain_data import LinkPred_PairNeigh_Loader
+from NCPNet.loader import LinkPred_PairNeigh_Loader
 import random
 class Net(torch.nn.Module):
     def __init__(self,config,cache_nxg=False):
@@ -27,7 +24,6 @@ class Net(torch.nn.Module):
                 self.gamma=0.5
         else:
             self.use_pair_enco=False
-
         decoder=self.config['Model']
         namespace=globals()
         if decoder in namespace and node_encoder in namespace:
@@ -60,9 +56,7 @@ class Net(torch.nn.Module):
                 self.z=torch.nn.parameter.Parameter(data=z.detach(),requires_grad=False)
             
     def forward(self,*args,**kwargs):
-
         z=self.node_Enco(x=kwargs['x'],edge_index=kwargs['edge_index'])
-        #x1=self.Deco(z,edge_label_index=kwargs['edge_label_index'])
         if self.use_pair_enco:
 
             out=self.Deco(z,edge_label_index=kwargs['edge_label_index'],neighbor=kwargs['neighbor'])
@@ -162,7 +156,6 @@ class Net(torch.nn.Module):
     def loadfrom(filepath):
         with open(filepath,'rb') as fin:
             model,train_data,config=pickle.load(fin)
-
         if model.train_data is None:
             model.train_data=train_data
         return model

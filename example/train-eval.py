@@ -3,21 +3,18 @@ from time import time
 import numpy as np
 import torch
 import os
-import torch_geometric
 import sys
 import os.path as osp
-
 import traceback
 import copy
 import argparse
 import yaml
-from NCPNet.brain_data import HemiBrain,LinkPred_Loader,Celegans19,LinkPred_PairNeigh_Loader
-
+from NCPNet.brain_data import HemiBrain,Celegans19
+from NCPNet.loader import LinkPred_Loader,LinkPred_PairNeigh_Loader
 import torch_geometric.transforms as T
 from NCPNet.approaches import Net
 from NCPNet.utils import load_config,edge_index2Graph
 from NCPNet.task import Base_Task
-from torch_geometric.loader import RandomNodeSampler,NeighborLoader
 from torch_geometric.transforms import RandomLinkSplit
 from NCPNet.trainer import LinkPred_trainer
 import matplotlib
@@ -33,7 +30,7 @@ def setup_seed(seed):
     torch.backends.cudnn.deterministic =True
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', type=str, default='configs/fly_linkpred.yaml')
+    parser.add_argument('-c', type=str, default='linkpred example.yaml')
     parser.add_argument('--search',type=str,default='plain',help='config search method')
     args = parser.parse_args()
     return args
@@ -60,7 +57,7 @@ def main():
             dataset = Celegans19(path, transform=transform,name=task['var'])
         elif task['Experiment']=='HemiBrain':
             dataset=HemiBrain(path,transform=transform)
-        task['num_node']=dataset.data.num_nodes
+        task['num_node']=dataset._data.num_nodes
         task['type_dim']=dataset.typedim
         train_data, val_data, test_data = dataset[0]
         nxg=edge_index2Graph(train_data.edge_index.cpu())

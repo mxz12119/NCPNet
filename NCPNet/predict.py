@@ -13,8 +13,8 @@ import traceback
 import copy
 import argparse
 import yaml
-from NCPNet.brain_data import HemiBrain,LinkPred_Loader,Celegans19,LinkPred_PairNeigh_Loader
-
+from NCPNet.brain_data import HemiBrain,Celegans19
+from NCPNet.loader import LinkPred_Loader,LinkPred_PairNeigh_Loader
 import torch_geometric.transforms as T
 from NCPNet.approaches import Net
 from NCPNet.utils import load_config,edge_index2Graph

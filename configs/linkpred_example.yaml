@@ -1,8 +1,8 @@
 Experiment: 'HemiBrain' #Dataset name
 Train: #Train setting
-  val: 0.80 #Valid set
+  val: 0.85 #Valid set
   test: 0.1 #Test set
-  train: 0.1 #Train set
+  train: 0.05 #Train set
   lr: 0.005 #Learning rate
   epoch: 400 
   weight_decay: 0.000005 # Optimizer setting
@@ -16,7 +16,7 @@ Train: #Train setting
   task_save: 'mlp_demo_model3' # save director name
   use_tensor_board: True # Tensorboard is used for recording training process.
   batch_size : 10000
-  save_dataset: True #Whether save split dataset
+  save_dataset: True #If save split dataset
 Model: 
   LinkPred: # Link prediction task
     node_encoder: 'GCN' #NSIE 
